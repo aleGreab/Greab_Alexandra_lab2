@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Greab_Alexandra_lab2Context"
+    }
+  }
+}
