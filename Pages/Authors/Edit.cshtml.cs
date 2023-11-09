@@ -25,12 +25,12 @@ namespace Greab_Alexandra_lab2.Pages.Authors
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id == null || _context.Author == null)
             {
                 return NotFound();
             }
 
-            var authors =  await _context.Authors.FirstOrDefaultAsync(m => m.ID == id);
+            var authors =  await _context.Author.FirstOrDefaultAsync(m => m.ID == id);
             if (authors == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace Greab_Alexandra_lab2.Pages.Authors
 
         private bool AuthorsExists(int id)
         {
-          return (_context.Authors?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.Author?.Any(e => e.ID == id)).GetValueOrDefault();
         }
     }
 }

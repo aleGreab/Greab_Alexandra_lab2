@@ -15,11 +15,24 @@ namespace Greab_Alexandra_lab2.Data
         }
 
         public DbSet<Greab_Alexandra_lab2.Models.Book> Book { get; set; } = default!;
+        public DbSet<Greab_Alexandra_lab2.Models.Borrowing> Borrowings { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Borrowing)
+                .WithOne(b => b.Book)
+                .HasForeignKey<Borrowing>(b => b.BookID);
+        }
 
         public DbSet<Greab_Alexandra_lab2.Models.Publisher>? Publisher { get; set; }
 
-        public DbSet<Greab_Alexandra_lab2.Models.Author>? Authors { get; set; }
+        public DbSet<Greab_Alexandra_lab2.Models.Author>? Author { get; set; }
 
         public DbSet<Greab_Alexandra_lab2.Models.Category>? Category { get; set; }
+
+        public DbSet<Greab_Alexandra_lab2.Models.Member>? Member { get; set; }
+
     }
 }

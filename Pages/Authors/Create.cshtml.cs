@@ -25,18 +25,18 @@ namespace Greab_Alexandra_lab2.Pages.Authors
         }
 
         [BindProperty]
-        public Author Authors { get; set; } = default!;
+        public Author Author { get; set; } = default!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Authors == null || Authors == null)
+          if (!ModelState.IsValid || _context.Author == null || Author == null)
             {
                 return Page();
             }
 
-            _context.Authors.Add(Authors);
+            _context.Author.Add(Author);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

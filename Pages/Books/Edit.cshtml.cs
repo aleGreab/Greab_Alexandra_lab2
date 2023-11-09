@@ -25,80 +25,55 @@ namespace Greab_Alexandra_lab2.Pages.Books
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Book == null)
             {
                 return NotFound();
             }
-
             Book = await _context.Book
-              .Include(b => b.Publisher)
-              .Include(b => b.BookCategories).ThenInclude(b => b.Category)
-               .AsNoTracking()
-               .FirstOrDefaultAsync(m => m.ID == id);
+                .Include(b => b.Publisher)
+                .Include(b => b.BookCategories)
+                .ThenInclude(b => b.Category)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-            var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+
+            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+
             if (book == null)
             {
                 return NotFound();
             }
-
-            PopulateAssignedCategoryData(_context, Book);
-            var authorList = _context.Authors.Select(x => new
-            {
-                x.ID,
-                FullName = x.LastName + " " + x.FirstName
-            });
-
             Book = book;
-
+            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "FullName");
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "FirstName", "LastName");
-
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-       
-         public async Task<IActionResult> OnPostAsync(int? id, string[]
-    selectedCategories )
+        public async Task<IActionResult> OnPostAsync(int? id, string[] selectedCategories)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
             var bookToUpdate = await _context.Book
-            .Include(i => i.Publisher)
-            .Include(i => i.BookCategories)
-            .ThenInclude(i => i.Category)
-            .FirstOrDefaultAsync(s => s.ID == id);
+                .Include(i => i.Publisher)
+                .Include(i => i.BookCategories)
+                .ThenInclude(i => i.Category)
+                .FirstOrDefaultAsync(s => s.ID == id);
 
             if (bookToUpdate == null)
             {
                 return NotFound();
             }
-
-            if (await TryUpdateModelAsync<Book>(
-            bookToUpdate,
-            "Book",
-            i => i.Title, i => i.Author,
-            i => i.Price, i => i.PublishingDate, i => i.PublisherID))
+            if (await TryUpdateModelAsync<Book>(bookToUpdate, "Book", i => i.Title, i => i.Author, i => i.Price, i => i.PublishingDate, i => i.PublisherID))
             {
                 UpdateBookCategories(_context, selectedCategories, bookToUpdate);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return RedirectToPage("Books/Index");
             }
-
             UpdateBookCategories(_context, selectedCategories, bookToUpdate);
             PopulateAssignedCategoryData(_context, bookToUpdate);
             return Page();
-
-        }
-
-        private void UpdateBookCategories(Greab_Alexandra_lab2Context context, string[] selectedCategories, Book bookToUpdate)
-        {
-            throw new NotImplementedException();
         }
     }
 }

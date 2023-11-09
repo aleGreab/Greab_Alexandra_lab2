@@ -20,40 +20,40 @@ namespace Greab_Alexandra_lab2.Pages.Authors
         }
 
         [BindProperty]
-      public Author Authors { get; set; } = default!;
+      public Author Author { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id == null || _context.Author == null)
             {
                 return NotFound();
             }
 
-            var authors = await _context.Authors.FirstOrDefaultAsync(m => m.ID == id);
+            var author = await _context.Author.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (authors == null)
+            if (author == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
-                Authors = authors;
+                Author = author;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Authors == null)
+            if (id == null || _context.Author == null)
             {
                 return NotFound();
             }
-            var authors = await _context.Authors.FindAsync(id);
+            var author = await _context.Author.FindAsync(id);
 
-            if (authors != null)
+            if (author != null)
             {
-                Authors = authors;
-                _context.Authors.Remove(Authors);
+                Author = author;
+                _context.Author.Remove(Author);
                 await _context.SaveChangesAsync();
             }
 

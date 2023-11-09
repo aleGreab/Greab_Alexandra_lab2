@@ -29,9 +29,9 @@ namespace Greab_Alexandra_lab2.Pages.Publishers
         public async Task OnGetAsync(int? id, int? bookID)
         {
             PublisherData = new PublisherIndexData();
-            PublisherData.Publishers = await _context.Publisher
-                .Include(i => i.Books)
-                    .ThenInclude(c => c.Author)
+            PublisherData.Publishers = await _context
+                .Publisher.Include(i => i.Books)
+                .ThenInclude(c => c.Author)
                 .OrderBy(i => i.PublisherName)
                 .ToListAsync();
 
